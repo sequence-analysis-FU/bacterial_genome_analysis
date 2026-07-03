@@ -1,25 +1,8 @@
-#CONFIG FILE
-#Paths to the file that will be needed in the Snakefile
-ref : "/data/reference.fa" #whatever path to where 'reference.fasta' is stored in
-samples : "/config/samples.tsv"    #whatever path to where 'samples.tsv' is stored in
-
-#Bowtie2 parameters
-bowtie2:
-  N: 1
-  L: 30
-  D: 15
-  R: 2
-  X: 1000
-  sensitivity: "--very-sensitive"
-  extra: ""
+ref : "/data/reference.fa"
+samples : "config/samples.tsv"
 
 #Trimmomatic parameters
 trimmomatic:
   adapters: "resources/adapters/TruSeq3-PE-2.fa"
   illuminaclip: "2:30:10"
   extra: "LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36"
-
-# Optional QC / Preprocessing skips
-skip_trimming: False
-skip_fastqc: False
-skip_qualimap: False

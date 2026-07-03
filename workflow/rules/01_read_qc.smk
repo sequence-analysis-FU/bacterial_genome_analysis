@@ -61,45 +61,16 @@ rule fastqc_trimmed:
         "v5.7.0/bio/fastqc"
 
 
-rule qualimap_bamqc:
-    input:
-        bam="results/bam_sorted/{sample}_sorted.bam",
-        bai="results/bam_sorted/{sample}_sorted.bam.bai",
-    output:
-        html="results/qc/qualimap/{sample}/qualimapReport.html",
-        txt="results/qc/qualimap/{sample}/genome_results.txt",
-    params:
-        extra=config.get("qualimap", {}).get("extra", ""),
-        outdir=lambda wildcards, output: os.path.dirname(output.html),
-    log:
-        "results/logs/qualimap/{sample}.log"
-    conda:
-        "../envs/qc.yaml"
-    threads: 4
-    shell:
-        "qualimap bamqc -bam {input.bam} -outdir {params.outdir} -nt {threads} {params.extra} 2> {log}"
-
-
 rule multiqc:
     input:
-        raw_fastqc=expand("results/qc/fastqc_raw/{sample}_{idx}_fastqc.zip",
-                          sample=samples.index, idx=['1','2'])
-                   if not config.get("skip_fastqc", False) else [],
-        trimmed_fastqc=expand("results/qc/fastqc_trimmed/{sample}_{idx}_fastqc.zip",
-                               sample=samples.index, idx=['1','2'])
-                        if not config.get("skip_fastqc", False)
-                        and not config.get("skip_trimming", False) else [],
-        trimmomatic=expand("results/logs/trimmomatic/{sample}.log", sample=samples.index)
-                    if not config.get("skip_trimming", False) else [],
-        bowtie2=expand("results/logs/bowtie2_map/{sample}.log", sample=samples.index),
-        qualimap=expand("results/qc/qualimap/{sample}/genome_results.txt", sample=samples.index)
-                 if not config.get("skip_qualimap", False) else [],
+        raw_fastqc=expand("results/qc/fastqc_raw/{sample}_{idx}_fastqc.zip",sample=samples.index, idx=['1','2']),
+        trimmed_fastqc=expand("results/qc/fastqc_trimmed/{sample}_{idx}_fastqc.zip",sample=samples.index, idx=['1','2']),
+        trimmomatic=expand("results/logs/trimmomatic/{sample}.log", sample=samples.index),
     output:
         report="results/qc/multiqc/multiqc_report.html",
         data=directory("results/qc/multiqc/multiqc_data"),
     params:
         extra="",
-        use_input_files_only=True,
     log:
         "results/logs/multiqc.log"
     conda:
@@ -108,6 +79,7 @@ rule multiqc:
         "v5.7.0/bio/multiqc"
 
 
+# run seperately before main workflow
 rule run_raw_qc:
     input:
         expand("results/qc/fastqc_raw/{sample}_{idx}_fastqc.zip", sample=samples.index, idx=['1','2'])
@@ -116,13 +88,9 @@ rule run_raw_qc:
         data=directory("results/qc/multiqc_raw/multiqc_data"),
     params:
         extra="",
-        use_input_files_only=True,
     log:
         "results/logs/multiqc_raw.log"
     conda:
         "../envs/qc.yaml"
     wrapper:
         "v5.7.0/bio/multiqc"
-
-
-

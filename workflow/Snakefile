@@ -1,0 +1,21 @@
+import os
+import pandas as pd
+
+configfile: "config/config.yaml"
+samples = pd.read_csv(config["samples"],index_col="sample",sep="\t")
+
+include: "rules/bowtie.smk"
+include: "rules/samtools.smk"
+include: "rules/qc.smk"
+
+rule all:
+  input:
+    "results/stats/all_samples_idxstats.tsv", #the target is the idxstats_summary file bc it's the last one that can be done after the whole workflow
+    expand("results/filtered/{sample}_filtered.bam",sample=samples.index),
+    "results/qc/multiqc/multiqc_report.html"   # full report drives all QC steps
+
+rule aggregate_idxstats:
+  input: expand("results/stats/{sample}.stats",sample=samples.index)
+  output: "results/stats/all_samples_idxstats.tsv"
+  log: "results/logs/aggregate_idxstats.log"
+  script: "scripts/aggregate_stats.py"

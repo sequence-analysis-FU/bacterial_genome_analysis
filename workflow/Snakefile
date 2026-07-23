@@ -28,4 +28,5 @@ include: "rules/08_protein_analysis.smk"
 rule all:
   input:
     "results/qc/multiqc/multiqc_report.html",
+    "results/qc/multiqc_assembly_report.html",
     expand(get_final_assembly, sample=samples.index)  #call for the polished assemblies (need this bc there are 2 options: with/without short reads)

@@ -42,6 +42,9 @@ minimap2_long:
     MinION: "map-ont"
     default: "map-ont"
 
+pilon:
+  params:
+    java_mem: "16G"
 # --------------------------------------------------------------------
 # 04_assembly_qc
 

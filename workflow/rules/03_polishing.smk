@@ -86,7 +86,7 @@ if ENABLE_SHORT_READS:
         log:
             "results/logs/pilon/{sample}.log"
         params:
-            java_mem = "16G"
+            java_mem = config["pilon"]["params"]["java_mem"]
         conda:
             "../envs/03_polishing.yaml"
         shell:

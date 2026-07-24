@@ -3,6 +3,11 @@ import pandas as pd
 
 configfile: "config/config.yaml"
 samples = pd.read_csv(config["samples"],index_col="sample",sep="\t")
+ENABLE_SHORT_READS = config.get("short_reads", {}).get("enabled", True)
+
+all_targets = ["results/qc/multiqc_long/multiqc_report.html"]
+if ENABLE_SHORT_READS:
+  all_targets.append("results/qc/multiqc_short/multiqc_report.html")
 
 include: "rules/01_read_qc.smk"
 include: "rules/02_assembly.smk"
@@ -15,4 +20,4 @@ include: "rules/08_protein_analysis.smk"
 
 rule all:
   input:
-    "results/qc/multiqc/multiqc_report.html"
+    all_targets

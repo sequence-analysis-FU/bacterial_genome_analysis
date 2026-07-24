@@ -1,8 +1,46 @@
-ref : "/data/reference.fa"
-samples : "config/samples.tsv"
+samples : "config/samples_set1.tsv"
 
-#Trimmomatic parameters
-trimmomatic:
-  adapters: "resources/adapters/TruSeq3-PE-2.fa"
-  illuminaclip: "2:30:10"
-  extra: "LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36"
+# --------------------------------------------------------------------
+# configuration for the workflow
+
+short_reads:
+  enabled: true
+
+# --------------------------------------------------------------------
+# 01_read_qc
+
+multiqc:
+  extra: ""
+
+sequali:
+  extra: ""
+
+fastplong:
+  extra: "--length_required 1000"
+
+fastqc:
+  extra: "--quiet"
+
+fastp:
+  extra: "--length_required 36 --cut_front --cut_tail --cut_mean_quality 15"
+
+# --------------------------------------------------------------------
+# 02_assembly
+
+# --------------------------------------------------------------------
+# 03_polishing
+
+# --------------------------------------------------------------------
+# 04_assembly_qc
+
+# --------------------------------------------------------------------
+# 05_annotation
+
+# --------------------------------------------------------------------
+# 06_resistance_genes
+
+# --------------------------------------------------------------------
+# 07_comparative_genomics
+
+# --------------------------------------------------------------------
+# 08_protein_analysis

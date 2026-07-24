@@ -3,7 +3,7 @@
 
 rule sequali_raw:
     input:
-        fq=lambda wildcards: samples.at[wildcards.sample, "long_fq"],
+        sample=lambda wildcards: samples.at[wildcards.sample, "long_fq"],
     output:
         json="results/qc/sequali_raw/{sample}.json",
         html="results/qc/sequali_raw/{sample}.html",
@@ -13,7 +13,7 @@ rule sequali_raw:
     resources:
         mem_mb=1024,
     params:
-        extra= config["sequali"]["extra"],
+        extra=config["sequali"]["extra"],
     wrapper:
         "v9.6.0/bio/sequali"
 
@@ -44,7 +44,7 @@ rule fastplong:
 
 rule sequali_trimmed:
     input:
-        fq=lambda wildcards: f"results/trimmed/{wildcards.sample}_long.fastq.gz",
+        sample="results/trimmed/{sample}_long.fastq.gz",
     output:
         json="results/qc/sequali_trimmed/{sample}.json",
         html="results/qc/sequali_trimmed/{sample}.html",

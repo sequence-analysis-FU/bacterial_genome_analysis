@@ -85,7 +85,9 @@ if ENABLE_SHORT_READS:
             fasta = "results/polishing/{sample}/pilon_polished.fasta"
         log:
             "results/logs/pilon/{sample}.log"
+        params:
+            java_mem = "16G"
         conda:
             "../envs/03_polishing.yaml"
         shell:
-            "pilon --genome {input.assembly} --frags {input.bam} --outdir results/polishing/{wildcards.sample} --output pilon_polished > {log} 2>&1"
+            "export _JAVA_OPTIONS=\"-Xmx{params.java_mem}\" && pilon --genome {input.assembly} --frags {input.bam} --outdir results/polishing/{wildcards.sample} --output pilon_polished > {log} 2>&1"

@@ -11,7 +11,7 @@ rule quast_qc:
         "results/logs/quast/{sample}.log"
     shell:
         """
-        quast.py {input.fasta} -o {output.dir} --threads {threads} > {log} 2>&1
+        quast.py {input.fasta} -o {output.dir} --threads {threads} --label {wildcards.sample} > {log} 2>&1
         """
 
 #BUSCO quality control for consistency
@@ -23,7 +23,7 @@ rule busco_qc:
         short_summary = "results/qc/busco/{sample}/short_summary.specific.bacteria_odb10.{sample}.txt"
     params:
         lineage = "bacteria_odb10",
-        out_name = "{sample}",
+        out_name = lambda wildcards: wildcards.sample,
         out_path = "results/qc/busco"
     threads: 8
     conda: "../envs/04_assembly_qc.yaml"
@@ -43,7 +43,7 @@ rule multiqc_assembly:
         report = "results/qc/multiqc/multiqc_assembly_report.html",
         data = directory("results/qc/multiqc/multiqc_data")
     params:
-        extra = config["multiqc"]["extra"],
+        extra = config["multiqc_assembly"]["extra"],
     log:
         "results/logs/multiqc_assembly.log"
     wrapper:

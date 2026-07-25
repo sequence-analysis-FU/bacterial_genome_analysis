@@ -48,10 +48,8 @@ if ENABLE_SHORT_READS:
     #Map short reads
     rule bwa_mem_short:
         input:
-            reads = lambda wildcards: [
-                samples.at[wildcards.sample, "fq1"],
-                samples.at[wildcards.sample, "fq2"],
-            ],
+            r1 = "results/trimmed/{sample}_1.fastq.gz",
+            r2 = "results/trimmed/{sample}_2.fastq.gz",
             index = multiext("results/polishing/{sample}/racon_polished.fasta", ".amb", ".ann", ".bwt", ".pac", ".sa")
         output:
             temp("results/polishing/{sample}/to_polish.bam")
@@ -60,7 +58,7 @@ if ENABLE_SHORT_READS:
         conda:
             "../envs/03_polishing.yaml"
         shell:
-            "bwa mem results/polishing/{wildcards.sample}/racon_polished.fasta {input.reads} 2> {log} | samtools view -bS - > {output} 2>> {log}"
+            "bwa mem results/polishing/{wildcards.sample}/racon_polished.fasta {input.r1} {input.r2} 2> {log} | samtools view -bS - > {output} 2>> {log}"
 
     # Sort the polished BAM file
     rule sort_polishing_bam:

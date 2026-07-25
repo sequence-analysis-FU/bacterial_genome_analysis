@@ -12,6 +12,9 @@ short_reads:
 multiqc:
   extra: ""
 
+multiqc_assembly:
+  extra: "--dirs" # to look at parents for busco
+
 sequali:
   extra: ""
 

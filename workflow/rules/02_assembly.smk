@@ -1,6 +1,6 @@
 rule flye_assembly:
     input:
-        reads = "results/preprocessed/{sample}_long_trimmed.fastq.gz"  #change to the real output of 01_read_qc.smk
+        reads = "results/trimmed/{sample}_long.fastq.gz"
     output:
         fasta = "results/assembly/{sample}/assembly.fasta",
         gfa = "results/assembly/{sample}/assembly_graph.gfa"
@@ -14,8 +14,8 @@ rule flye_assembly:
         "results/logs/assembly/{sample}.log"
     threads: 8
     conda:
-        "../envs/assembly.yaml"
+        "../envs/02_assembly.yaml"
     shell:
         """
-        flye {params.mode} {input.reads} --out-dir {params.outdir} --threads {threads} --force > {log} 2>&1
+        flye {params.mode} {input.reads} --out-dir {params.outdir} --threads {threads} > {log} 2>&1
         """

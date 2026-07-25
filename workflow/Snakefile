@@ -3,6 +3,20 @@ import pandas as pd
 
 configfile: "config/config.yaml"
 samples = pd.read_csv(config["samples"],index_col="sample",sep="\t")
+ENABLE_SHORT_READS = config.get("short_reads", {}).get("enabled", True)
+
+def get_final_assembly(wildcards):
+    """
+    Determines the right path of the polished assembly, depending on the availability of short reads.
+    """
+    #If there are short reads...
+    if ENABLE_SHORT_READS:
+        #...final polished assembly should be the Pilon one
+        return f"results/polishing/{wildcards.sample}/pilon_polished.fasta"
+    else:
+        #if there aren't short reads, the final polished assembly should be the Racon one
+        return f"results/polishing/{wildcards.sample}/racon_polished.fasta"
+
 
 include: "rules/01_read_qc.smk"
 include: "rules/02_assembly.smk"
@@ -13,6 +27,14 @@ include: "rules/06_resistance_genes.smk"
 include: "rules/07_comparative_genomics.smk"
 include: "rules/08_protein_analysis.smk"
 
+all_targets = [
+    "results/qc/multiqc_long/multiqc_report.html",
+    "results/qc/multiqc/multiqc_assembly_report.html",
+    ]
+    
+if ENABLE_SHORT_READS:
+  all_targets.append("results/qc/multiqc_short/multiqc_report.html")
+
 rule all:
   input:
-    "results/qc/multiqc/multiqc_report.html"
+    all_targets

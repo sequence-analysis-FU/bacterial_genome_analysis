@@ -1,9 +1,0 @@
-channels:
-  - conda-forge
-  - bioconda
-dependencies:
-  - fastqc=0.12.1
-  - snakemake-wrapper-utils=0.6.2
-  - trimmomatic=0.39
-  - qualimap=2.3
-  - multiqc=1.25

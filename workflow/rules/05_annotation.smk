@@ -23,7 +23,7 @@ rule bakta_annotation:
     params:
         outdir = "results/annotation/{sample}",
         prefix = "{sample}",
-        db = config["bakta"]["db_path"] 
+        db = lambda wildcards: f"{config['bakta']['db_path']}/db-{config['bakta'].get('db_type', 'light')}" 
     log:
         "results/logs/bakta/{sample}.log"
     threads: 8

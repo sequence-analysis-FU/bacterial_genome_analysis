@@ -9,6 +9,9 @@ short_reads:
 resistance_screening:
   enabled: true
 
+protein_analysis:
+  enabled: true
+
 # --------------------------------------------------------------------
 # 01_read_qc
 
@@ -70,3 +73,6 @@ card:
 
 # --------------------------------------------------------------------
 # 08_protein_analysis
+
+protein_set:
+  path: "resources/protein_set.faa"

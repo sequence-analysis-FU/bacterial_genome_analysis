@@ -7,6 +7,7 @@ samples = pd.read_csv(config["samples"],index_col="sample",sep="\t")
 # Flags to enable/disable steps of the workflow
 ENABLE_SHORT_READS = config.get("short_reads", {}).get("enabled", True)
 ENABLE_RESISTANCE_SCREENING = config.get("resistance_screening", {}).get("enabled", True)
+ENABLE_PROTEIN_ANALYSIS = config.get("protein_analysis", {}).get("enabled", True)
 
 def get_final_assembly(wildcards):
     """
@@ -38,7 +39,9 @@ all_targets = [
 if ENABLE_SHORT_READS:
   all_targets.append("results/qc/multiqc_short/multiqc_report.html")
 if ENABLE_RESISTANCE_SCREENING:
-  all_targets.append("results/qc/multiqc_resistance/multiqc_report.html")
+  all_targets.extend(["results/qc/multiqc_resistance/multiqc_report.html", "results/resistance_screening/all_samples.tsv"])
+if ENABLE_PROTEIN_ANALYSIS:
+  all_targets.append("results/qc/multiqc_protein/multiqc_report.html")
 
 rule all:
   input:

@@ -1,6 +1,21 @@
+rule download_bakta_db:
+    output:
+        directory(config["bakta"]["db_path"])
+    params:
+        db_type = config["bakta"].get("db_type", "light") #default is 'light' db
+    conda:
+        "../envs/annotation.yaml"
+    log:
+        "results/logs/bakta_db_setup.log"
+    shell:
+        """
+        bakta_db download --output {output} --type {params.db_type} > {log} 2>&1
+        """
+
 rule bakta_annotation:
     input:
         fasta = get_final_assembly
+        db = rules.download_bakta_db.output  #execute rule for creating the bakta db before executing this rule for annotation
     output:
         gff = "results/annotation/{sample}/{sample}.gff3", #main annotation file
         faa = "results/annotation/{sample}/{sample}.faa",  #predicted protein sequences

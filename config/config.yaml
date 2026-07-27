@@ -12,6 +12,9 @@ short_reads:
 multiqc:
   extra: ""
 
+multiqc_assembly:
+  extra: "--dirs" # to look at parents for busco
+
 sequali:
   extra: ""
 
@@ -36,6 +39,15 @@ flye:
 # --------------------------------------------------------------------
 # 03_polishing
 
+minimap2_long:
+  params:
+    PacBio: "map-pb"
+    MinION: "map-ont"
+    default: "map-ont"
+
+pilon:
+  params:
+    java_mem: "16G"
 # --------------------------------------------------------------------
 # 04_assembly_qc
 
@@ -43,7 +55,8 @@ flye:
 # 05_annotation
 
 bakta:
-  db_path: ""
+  db_path: "resources/db_bakta"
+  db_type: "light"  #change as wanted between 'full' or 'light'
 
 # --------------------------------------------------------------------
 # 06_resistance_genes

@@ -6,6 +6,9 @@ samples : "config/samples_set1.tsv"
 short_reads:
   enabled: true
 
+resistance_screening:
+  enabled: true
+
 # --------------------------------------------------------------------
 # 01_read_qc
 
@@ -57,6 +60,11 @@ pilon:
 # --------------------------------------------------------------------
 # 06_resistance_genes
 
+screening:
+  extra: ""
+
+card:
+  db_path: "resources/db_card"
 # --------------------------------------------------------------------
 # 07_comparative_genomics
 

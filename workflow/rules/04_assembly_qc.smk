@@ -24,14 +24,15 @@ rule busco_qc:
     params:
         lineage = "bacteria_odb10",
         out_name = lambda wildcards: wildcards.sample,
-        out_path = "results/qc/busco"
+        out_path = "results/qc/busco",
+        download_path = "resources/busco_downloads"
     threads: 8
     conda: "../envs/04_assembly_qc.yaml"
     log:
         "results/logs/busco/{sample}.log"
     shell:
         """
-        busco -i {input.fasta} -o {params.out_name} --out_path {params.out_path} -m genome -l {params.lineage} --cpu {threads} --force > {log} 2>&1
+        busco -i {input.fasta} -o {params.out_name} --out_path {params.out_path} -m genome -l {params.lineage} --download_path {params.download_path} --cpu {threads} --force > {log} 2>&1
         """
 
 #MultiQC for the single QCs of the single assemblies
@@ -40,8 +41,8 @@ rule multiqc_assembly:
         quast = expand("results/qc/quast/{sample}/report.txt", sample=samples.index),
         busco = expand("results/qc/busco/{sample}/short_summary.specific.bacteria_odb10.{sample}.txt", sample=samples.index)
     output:
-        report = "results/qc/multiqc/multiqc_assembly_report.html",
-        data = directory("results/qc/multiqc/multiqc_data")
+        report = "results/qc/multiqc_assembly/multiqc_assembly_report.html",
+        data = directory("results/qc/multiqc_assembly/multiqc_data")
     params:
         extra = config["multiqc_assembly"]["extra"],
     log:

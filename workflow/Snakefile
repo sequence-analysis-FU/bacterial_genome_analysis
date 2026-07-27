@@ -35,6 +35,8 @@ all_targets = [
 if ENABLE_SHORT_READS:
   all_targets.append("results/qc/multiqc_short/multiqc_report.html")
 
+all_targets.append(expand("results/annotation/{sample}/{sample}.gff3", sample=samples.index)) #TEMPORARY only to trigger the annotation rules
+
 rule all:
   input:
     all_targets

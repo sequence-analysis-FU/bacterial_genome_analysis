@@ -4,7 +4,7 @@ rule download_bakta_db:
     params:
         db_type = config["bakta"].get("db_type", "light") #default is 'light' db
     conda:
-        "../envs/annotation.yaml"
+        "../envs/05_annotation.yaml"
     log:
         "results/logs/bakta_db_setup.log"
     shell:
@@ -28,7 +28,7 @@ rule bakta_annotation:
         "results/logs/bakta/{sample}.log"
     threads: 8
     conda:
-        "../envs/annotation.yaml"
+        "../envs/05_annotation.yaml"
     shell:
         """
         bakta --db {params.db} \

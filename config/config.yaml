@@ -60,6 +60,10 @@ pilon:
 # --------------------------------------------------------------------
 # 05_annotation
 
+bakta:
+  db_path: "resources/db_bakta"
+  db_type: "light"  #change as wanted between 'full' or 'light'
+
 # --------------------------------------------------------------------
 # 06_resistance_genes
 

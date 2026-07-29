@@ -1,3 +1,5 @@
+BAKTA_DB_DIR = config["bakta"]["db_path"] + "/db-" + config["bakta"].get("db_type", "light")
+
 rule download_bakta_db:
     output:
         directory(config["bakta"]["db_path"])
@@ -15,7 +17,7 @@ rule download_bakta_db:
 rule bakta_annotation:
     input:
         fasta = get_final_assembly,
-        db = rules.download_bakta_db.output  #execute rule for creating the bakta db before executing this rule for annotation
+        db = rules.download_bakta_db.output,  #execute rule for creating the bakta db before executing this rule for annotation
     output:
         gff = "results/annotation/{sample}/{sample}.gff3", #main annotation file
         faa = "results/annotation/{sample}/{sample}.faa",  #predicted protein sequences
@@ -23,7 +25,7 @@ rule bakta_annotation:
     params:
         outdir = "results/annotation/{sample}",
         prefix = "{sample}",
-        db = config["bakta"]["db_path"]
+        db = BAKTA_DB_DIR
     log:
         "results/logs/bakta/{sample}.log"
     threads: 8

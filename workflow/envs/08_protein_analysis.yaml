@@ -1,11 +1,11 @@
 channels:
-	- conda-forge
-	- bioconda
+  - conda-forge
+  - bioconda
 dependencies:
-	- python=3.11
-	- blast=2.16.0
-	- mafft=7.526
-	- iqtree=2.3.6
-	- biopython=1.84
-	- pandas=2.2.2
-	- matplotlib=3.9.1
+  - python=3.11
+  - blast=2.16.0
+  - mafft=7.526
+  - iqtree=2.3.6
+  - biopython=1.84
+  - pandas=2.2.2
+  - matplotlib=3.9.1

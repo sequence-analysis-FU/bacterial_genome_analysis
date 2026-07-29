@@ -23,7 +23,7 @@ def get_panaroo_inputs(wildcards):
 
 # Aggregation function for ASTRAL (used in 07_comparative_genomics.smk)
 def aggregate_gene_trees(wildcards):
-    checkpoint_output = checkpoints.run_panaroo.get(**wildcards).output
+    checkpoint_output = checkpoints.run_panaroo.get(**wildcards).output.dir
     import os
     genes = [f.replace(".fas", "") for f in os.listdir(checkpoint_output) if f.endswith(".fas")]
     return expand("results/comparative/gene_trees/{gene}.treefile", gene=genes)

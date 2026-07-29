@@ -75,6 +75,10 @@ card:
 # --------------------------------------------------------------------
 # 07_comparative_genomics
 
+comparative_genomics:
+  external_genome : ""
+  core_threshold: 0.95 #1.00 is too strict
+  
 # --------------------------------------------------------------------
 # 08_protein_analysis
 

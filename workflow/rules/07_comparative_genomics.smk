@@ -45,8 +45,10 @@ rule iqtree_gene_tree:
         tree = "results/comparative/gene_trees/{gene}.treefile"
     threads: 2
     conda: "../envs/07_comparative.yaml"
+    log: "results/logs/iqtree/{gene}.log"
     shell:
-        "iqtree -s {input.aln} -m AUTO -nt {threads} -pre results/comparative/gene_trees/{wildcards.gene}"
+        # MFP is model finder plus, which will test multiple models and select the best one
+        "iqtree -s {input.aln} -m MFP -nt {threads} -pre results/comparative/gene_trees/{wildcards.gene} > {log} 2>&1"
 
 
 # ASTRAL to collect all trees and do the species core genome tree

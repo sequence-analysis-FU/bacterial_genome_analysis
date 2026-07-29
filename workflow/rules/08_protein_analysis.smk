@@ -73,7 +73,7 @@ if ENABLE_PROTEIN_ANALYSIS:
                     continue
                 fi
 
-                aln="{output.alignment_dir}/${protein}.aln.faa"
+                aln="{output.alignment_dir}/$protein.aln.faa"
                 mafft {params.extra} --thread {threads} --auto --reorder --amino "$fasta" > "$aln" 2>> {log}
             done
             touch {output.done}
@@ -97,7 +97,7 @@ if ENABLE_PROTEIN_ANALYSIS:
             r"""
             for aln in {input.alignment_dir}/*.aln.faa; do
                 protein=$(basename "$aln" .aln.faa)
-                iqtree2 {params.iqtree_extra} -s "$aln" -nt {threads} -pre "{output.tree_dir}/${protein}" >> {log} 2>&1
+                iqtree2 {params.iqtree_extra} -s "$aln" -nt {threads} -pre "{output.tree_dir}/$protein" >> {log} 2>&1
             done
             touch {output.done}
             """

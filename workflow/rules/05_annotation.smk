@@ -14,7 +14,7 @@ rule download_bakta_db:
 
 rule bakta_annotation:
     input:
-        fasta = get_final_assembly
+        fasta = get_final_assembly,
         db = rules.download_bakta_db.output  #execute rule for creating the bakta db before executing this rule for annotation
     output:
         gff = "results/annotation/{sample}/{sample}.gff3", #main annotation file
@@ -23,7 +23,7 @@ rule bakta_annotation:
     params:
         outdir = "results/annotation/{sample}",
         prefix = "{sample}",
-        db = config["bakta"]["db_path"] 
+        db = config["bakta"]["db_path"]
     log:
         "results/logs/bakta/{sample}.log"
     threads: 8

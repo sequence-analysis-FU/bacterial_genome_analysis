@@ -81,7 +81,7 @@ card:
 protein_set:
   path: "resources/protein_set.faa"
 
-blastp_search:
+blastp:
   extra: ""
   max_target_seqs: 10
 

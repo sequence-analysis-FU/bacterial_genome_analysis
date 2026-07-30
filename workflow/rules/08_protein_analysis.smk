@@ -32,7 +32,7 @@ if ENABLE_PROTEIN_ANALYSIS:
             "../envs/08_protein_analysis.yaml"
         threads: 4
         shell:
-            "blastp {params.extra} -query {input.protein_set} -db results/protein_analysis/blast_db/{wildcards.sample} -num_threads {threads} -max_target_seqs {params.max_target_seqs} -out {output.report} > {log} 2>&1"
+            "blastp {params.extra} -query {input.protein_set} -db results/protein_analysis/blast_db/{wildcards.sample} -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore' -num_threads {threads} -max_target_seqs {params.max_target_seqs} -out {output.report} > {log} 2>&1"
 
 
     rule prepare_ortholog_fastas:
@@ -66,6 +66,7 @@ if ENABLE_PROTEIN_ANALYSIS:
         threads: 4
         shell:
             r"""
+            shopt -s nullglob
             for fasta in {input.ortholog_dir}/*.faa; do
                 protein=$(basename "$fasta" .faa)
                 seq_count=$(grep -c '^>' "$fasta")
@@ -95,6 +96,7 @@ if ENABLE_PROTEIN_ANALYSIS:
         threads: 4
         shell:
             r"""
+            shopt -s nullglob
             for aln in {input.alignment_dir}/*.aln.faa; do
                 protein=$(basename "$aln" .aln.faa)
                 iqtree2 {params.iqtree_extra} -s "$aln" -nt {threads} -pre "{output.tree_dir}/$protein" >> {log} 2>&1

@@ -62,5 +62,5 @@ rule astral_species_tree:
     shell:
         """
         cat {input.trees} > results/comparative/all_gene_trees.txt
-        astral -i results/comparative/all_gene_trees.txt -o {output.species_tree} > {log} 2>&1
+        astral -Xmx100G -i results/comparative/all_gene_trees.txt -o {output.species_tree} > {log} 2>&1
         """

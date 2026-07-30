@@ -52,3 +52,16 @@ if ENABLE_RESISTANCE_SCREENING:
                 frames.append(frame)
 
             pd.concat(frames, ignore_index=True).to_csv(output.tsv, sep="\t", index=False)
+
+    rule multiqc_resistance:
+        input:
+            resistance_reports= "results/resistance_screening/all_samples.tsv"
+        output:
+            report="results/qc/multiqc_resistance/multiqc_report.html",
+            data=directory("results/qc/multiqc_resistance/multiqc_data")
+        params:
+            extra=config["multiqc"]["extra"],
+        log:
+            "results/logs/multiqc_resistance.log"
+        wrapper:
+            "v5.7.0/bio/multiqc"

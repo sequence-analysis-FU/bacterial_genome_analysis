@@ -1,5 +1,74 @@
-<img width="3277" height="5142" alt="workflow_final" src="https://github.com/user-attachments/assets/b1ad4207-74d8-4532-9db3-991273ebdb45" />
+# Workflow Overview
 
-<!--
-<img width="1024" height="1536" alt="ChatGPT Image 3  Juli 2026, 13_33_34" src="https://github.com/user-attachments/assets/274a6876-3723-4e2b-ac8a-ce714b38b25b" />
--->
+The pipeline performs bacterial genome analysis from raw sequencing reads to genome assembly, annotation, comparative genomics, antibiotic resistance screening, and optional protein phylogenetic analysis.
+
+<p align="center">
+  <img src="workflow_final.png" alt="Workflow Overview" width="900">
+</p>
+
+## Running the Pipeline
+
+Run the workflow with Snakemake:
+
+```bash
+snakemake --use-conda --cores <N>
+```
+
+## Configuration
+
+Specify the sample sheet:
+
+```yaml
+samples: "config/samples.tsv"
+```
+
+All settings are configured in `config/config.yaml`.
+
+Enable or disable optional workflow modules:
+
+```yaml
+short_reads:
+  enabled: true
+
+resistance_screening:
+  enabled: true
+
+protein_analysis:
+  enabled: true
+```
+
+Tool-specific parameters (e.g. `fastp`, `Flye`, `Bakta`, `BLAST`) and database locations can also be configured in `config.yaml`.
+
+For optional protein analysis, specify the input protein FASTA:
+
+```yaml
+protein_set:
+  path: "resources/protein_set.faa"
+```
+
+## Repository Structure
+
+```text
+.
+├── config
+│   ├── config.yaml
+│   └── samples.tsv
+├── resources
+│   └── protein_set.faa
+├── results
+│   ├── annotation
+│   ├── assembly
+│   ├── comparative
+│   ├── polishing
+│   ├── protein_analysis
+│   ├── qc
+│   ├── resistance_screening
+│   ├── trimmed
+│   └── logs
+├── workflow
+│   ├── Snakefile
+│   ├── envs
+│   ├── rules
+│   └── scripts
+└── README.md
+```

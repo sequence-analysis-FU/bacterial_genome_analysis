@@ -11,6 +11,8 @@ if ENABLE_RESISTANCE_SCREENING:
             "../envs/06_resistance_genes.yaml"
         shell:
             """
+            mkdir -p {params.db_path}
+            cd {params.db_path}
             rgi load --local > {log} 2>&1
             touch {output.done}
             """
@@ -31,20 +33,6 @@ if ENABLE_RESISTANCE_SCREENING:
         threads: 4
         shell:
             "rgi main {params.extra} --input_type protein -i {input.predicted_genes} -o {params.prefix} > {log} 2>&1"
-
-
-    rule multiqc_resistance:
-        input:
-            resistance_reports=expand("results/resistance_screening/{sample}/{sample}.txt", sample=samples.index),
-        output:
-            report="results/qc/multiqc_resistance/multiqc_report.html",
-            data=directory("results/qc/multiqc_resistance/multiqc_data")
-        params:
-            extra=config["multiqc"]["extra"],
-        log:
-            "results/logs/multiqc_resistance.log"
-        wrapper:
-            "v5.7.0/bio/multiqc"
 
 
     rule resistance_screening_tsv:

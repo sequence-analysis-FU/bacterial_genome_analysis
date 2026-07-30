@@ -22,14 +22,13 @@ include: "rules/08_protein_analysis.smk"
 
 all_targets = [
     "results/qc/multiqc_long/multiqc_report.html",
-    "results/qc/multiqc_assembly/multiqc_assembly_report.html",
-    "results/comparative/final_species_tree.tre"
+    "results/qc/multiqc_assembly/multiqc_assembly_report.html"
     ]
     
 if ENABLE_SHORT_READS:
   all_targets.append("results/qc/multiqc_short/multiqc_report.html")
 if ENABLE_RESISTANCE_SCREENING:
-  all_targets.extend(["results/qc/multiqc_resistance/multiqc_report.html", "results/resistance_screening/all_samples.tsv"])
+  all_targets.append("results/resistance_screening/all_samples.tsv")
 if ENABLE_PROTEIN_ANALYSIS:
   all_targets.append("results/protein_analysis/phylogenetic_tree_plot.png")
 

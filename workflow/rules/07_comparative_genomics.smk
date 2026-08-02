@@ -37,6 +37,36 @@ checkpoint run_panaroo:
                 -t {threads} --core_threshold {params.threshold} -a core --aligner mafft > {log} 2>&1
         """
 
+# To help astral to identify the correct numbers of species
+rule create_astral_mapping:
+    input:
+        trees = aggregate_gene_trees
+    output:
+        mapping = "results/comparative/species_mapping.txt"
+    shell:
+        r"""
+        cat {input.trees} \
+        | tr '(),:;' ' ' \
+        | tr ' ' '\n' \
+        | grep -E '^_?R?_?sample[0-9]+' \
+        | sort -u \
+        | awk '
+        {{
+            name=$0
+            clean=name
+            sub(/^_R_/, "", clean)
+            split(clean,a,"_")
+            species=a[1]
+            groups[species]=groups[species] " " name
+            count[species]++
+        }}
+        END {{
+            for (s in groups)
+                print s, count[s] groups[s]
+        }}' \
+        > {output.mapping}
+        """
+
 # Build individual gene trees
 rule iqtree_gene_tree:
     input:
@@ -54,13 +84,16 @@ rule iqtree_gene_tree:
 # ASTRAL to collect all trees and do the species core genome tree
 rule astral_species_tree:
     input:
-        trees = aggregate_gene_trees
+        trees = aggregate_gene_trees,
+        mapping = "results/comparative/species_mapping.txt"
     output:
         species_tree = "results/comparative/final_species_tree.tre"
+    threads: 16
     log: "results/logs/astral.log"
     conda: "../envs/07_comparative.yaml"
     shell:
         """
         cat {input.trees} > results/comparative/all_gene_trees.txt
-        astral -Xmx100G -i results/comparative/all_gene_trees.txt -o {output.species_tree} > {log} 2>&1
+        astral4 -i results/comparative/all_gene_trees.txt -a {input.mapping} \
+                -o {output.species_tree} -t {threads} > {log} 2>&1
         """

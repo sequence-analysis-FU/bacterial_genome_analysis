@@ -59,9 +59,7 @@ if ENABLE_RESISTANCE_SCREENING:
         output:
             report="results/qc/multiqc_resistance/multiqc_report.html",
             data=directory("results/qc/multiqc_resistance/multiqc_data")
-        params:
-            extra=config["multiqc"]["extra"],
         log:
             "results/logs/multiqc_resistance.log"
-        wrapper:
-            "v5.7.0/bio/multiqc"
+        script:
+            "../scripts/resistance_summary.py"

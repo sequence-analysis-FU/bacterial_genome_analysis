@@ -16,7 +16,7 @@ protein_analysis:
 # 01_read_qc
 
 multiqc:
-  extra: ""
+  extra: "--dirs" # to look at parents to be able to see before and after trimming in one report. (They have same name, but different path)
 
 multiqc_assembly:
   extra: "--dirs" # to look at parents for busco

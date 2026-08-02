@@ -40,6 +40,8 @@ if ENABLE_RESISTANCE_SCREENING:
             resistance_reports=expand("results/resistance_screening/{sample}/{sample}.txt", sample=samples.index)
         output:
             tsv="results/resistance_screening/all_samples.tsv"
+        log:
+            "results/logs/resistance_screening_tsv.log"
         script:
             "../scripts/resistance_screening_tsv.py"
 

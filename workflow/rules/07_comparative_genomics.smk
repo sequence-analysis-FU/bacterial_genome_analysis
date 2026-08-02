@@ -12,6 +12,8 @@ if EXTERNAL_FASTA:
             prefix = "external"
         threads: 8
         conda: "../envs/05_annotation.yaml"
+        log:
+            "results/logs/annotate_external_genome.log"
         shell:
             """
             bakta --db {input.db} --output {params.outdir} --prefix {params.prefix} \
@@ -43,6 +45,8 @@ rule create_astral_mapping:
         trees = aggregate_gene_trees
     output:
         mapping = "results/comparative/species_mapping.txt"
+    log:
+        "results/logs/create_astral_mapping.log"
     script:
         "../scripts/create_astral_mapping.sh"
 
@@ -82,6 +86,8 @@ rule plot_species_tree:
         tree = "results/comparative/final_species_tree.tre"
     output:
         plot = "results/comparative/final_species_tree.png"
+    log:
+        "results/logs/plot_species_tree.log"
     conda: "../envs/07_comparative.yaml"
     script:
         "../scripts/speciestree_plot.py"

@@ -8,3 +8,6 @@ dependencies:
   - mafft
   - iqtree
   - aster
+  - biopython=1.84
+  - pandas=2.2.2
+  - matplotlib=3.9.1

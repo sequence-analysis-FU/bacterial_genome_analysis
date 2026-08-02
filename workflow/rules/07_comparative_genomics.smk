@@ -57,12 +57,7 @@ rule create_astral_mapping:
             sub(/^_R_/, "", clean)
             split(clean,a,"_")
             species=a[1]
-            groups[species]=groups[species] " " name
-            count[species]++
-        }}
-        END {{
-            for (s in groups)
-                print s, count[s] groups[s]
+            print name, species
         }}' \
         > {output.mapping}
         """
@@ -97,3 +92,12 @@ rule astral_species_tree:
         astral4 -i results/comparative/all_gene_trees.txt -a {input.mapping} \
                 -o {output.species_tree} -t {threads} > {log} 2>&1
         """
+
+rule plot_species_tree:
+    input:
+        tree = "results/comparative/final_species_tree.tre"
+    output:
+        plot = "results/comparative/final_species_tree.png"
+    conda: "../envs/07_comparative.yaml"
+    script:
+        "../scripts/speciestree_plot.py"

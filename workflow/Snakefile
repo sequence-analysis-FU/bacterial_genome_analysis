@@ -31,7 +31,7 @@ if ENABLE_SHORT_READS:
 if ENABLE_RESISTANCE_SCREENING:
   all_targets.extend(["results/resistance_screening/all_samples.tsv", "results/qc/multiqc_resistance/multiqc_report.html"])
 if ENABLE_PROTEIN_ANALYSIS:
-  all_targets.append("results/protein_analysis/phylogenetic_tree_plot.png")
+  all_targets.append("results/protein_analysis/phylogenetic_tree_plots")
 
 rule all:
   input:

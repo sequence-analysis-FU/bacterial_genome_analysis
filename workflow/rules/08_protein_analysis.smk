@@ -111,7 +111,7 @@ if ENABLE_PROTEIN_ANALYSIS:
             tree=rules.trees.output.tree_dir,
             done=rules.trees.output.done
         output:
-            plot="results/protein_analysis/phylogenetic_tree_plot.png"
+            plot_dir=directory("results/protein_analysis/phylogenetic_tree_plots")
         log:
             "results/logs/plot_phylogenetic_tree.log"
         conda:

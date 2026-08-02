@@ -12,8 +12,9 @@ def main():
     sample_to_faa = {s: f for s, f in zip(sample_names, snakemake.input.sample_fastas)}
     os.makedirs(snakemake.output.ortholog_dir, exist_ok=True)
 
-    # Keep the first BLAST hit found.
+    # Keep the first (best) BLAST hit found.
     selected = {}
+    seen = set()
     for sample, report in zip(sample_names, snakemake.input.blastp_reports):
         if os.path.getsize(report) == 0:
             continue
@@ -26,8 +27,10 @@ def main():
                 if len(parts) < 2:
                     continue
                 qid, sid = parts[0].split()[0], parts[1].split()[0]
+                if (sample, qid) in seen:
+                    continue
+                seen.add((sample, qid))
                 selected.setdefault(qid, {})[sample] = sid
-                break
 
     # Write a simple summary
     with open(snakemake.output.summary, "w", encoding="utf-8") as handle:

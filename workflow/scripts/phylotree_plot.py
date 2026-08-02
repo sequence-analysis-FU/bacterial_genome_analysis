@@ -15,7 +15,7 @@ def plot_tree(tree_file, output_path):
     ax.set_ylabel("Samples", fontsize=10)
     plt.tight_layout()
     plt.savefig(output_path, bbox_inches="tight")
-    plt.close(fig)  # important! avoids memory buildup / figure bleed across trees
+    plt.close(fig)
 
 
 def main():

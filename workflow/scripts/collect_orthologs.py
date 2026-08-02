@@ -7,12 +7,12 @@ def load_fasta(path):
 
 
 def main():
-    # Use the BLAST report filenames as sample names.
+    # Use the blast report filenames as sample names.
     sample_names = [os.path.basename(p).removesuffix(".tsv") for p in snakemake.input.blastp_reports]
     sample_to_faa = {s: f for s, f in zip(sample_names, snakemake.input.sample_fastas)}
     os.makedirs(snakemake.output.ortholog_dir, exist_ok=True)
 
-    # Keep the first (best) BLAST hit found.
+    # Keep the first BLAST hit found. We assume thats the best one.
     selected = {}
     seen = set()
     for sample, report in zip(sample_names, snakemake.input.blastp_reports):
@@ -32,14 +32,13 @@ def main():
                 seen.add((sample, qid))
                 selected.setdefault(qid, {})[sample] = sid
 
-    # Write a simple summary
     with open(snakemake.output.summary, "w", encoding="utf-8") as handle:
         handle.write("query\tsample\tsubject\n")
         for qid in sorted(selected):
             for sample, sid in sorted(selected[qid].items()):
                 handle.write(f"{qid}\t{sample}\t{sid}\n")
 
-    # Build one FASTA-file
+    # Build fasta
     query_by_id = {rec.id: rec for rec in SeqIO.parse(snakemake.input.query_fasta, "fasta")}
     for qid, qrec in query_by_id.items():
         records = [qrec]

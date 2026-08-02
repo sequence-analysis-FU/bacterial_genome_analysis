@@ -37,30 +37,14 @@ checkpoint run_panaroo:
                 -t {threads} --core_threshold {params.threshold} -a core --aligner mafft > {log} 2>&1
         """
 
-# To help astral to identify the correct numbers of species
+# To help astral to identify the correct numbers of species. So ASTRAL can collapse multiple gene copies per genome into one species tip.
 rule create_astral_mapping:
     input:
         trees = aggregate_gene_trees
     output:
         mapping = "results/comparative/species_mapping.txt"
-    shell:
-        r"""
-        cat {input.trees} \
-        | tr '(),:;' ' ' \
-        | tr ' ' '\n' \
-        | grep -E '^_?R?_?sample[0-9]+' \
-        | sort -u \
-        | awk '
-        {{
-            name=$0
-            clean=name
-            sub(/^_R_/, "", clean)
-            split(clean,a,"_")
-            species=a[1]
-            print name, species
-        }}' \
-        > {output.mapping}
-        """
+    script:
+        "../scripts/create_astral_mapping.sh"
 
 # Build individual gene trees
 rule iqtree_gene_tree:

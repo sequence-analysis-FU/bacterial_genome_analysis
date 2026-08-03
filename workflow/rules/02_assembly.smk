@@ -16,6 +16,4 @@ rule flye_assembly:
     conda:
         "../envs/02_assembly.yaml"
     shell:
-        """
-        flye {params.mode} {input.reads} --out-dir {params.outdir} --threads {threads} > {log} 2>&1
-        """
+        "flye {params.mode} {input.reads} --out-dir {params.outdir} --threads {threads} > {log} 2>&1"

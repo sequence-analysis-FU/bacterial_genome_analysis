@@ -1,6 +1,7 @@
 # -------------------------------------------------------------------
-# prepolishing
+## Pre-polishing
 
+# Quast quality control
 rule quast_qc_prepolish:
     input:
         fasta = "results/assembly/{sample}/assembly.fasta"
@@ -12,10 +13,9 @@ rule quast_qc_prepolish:
     threads: 4
     conda: "../envs/04_assembly_qc.yaml"
     shell:
-        """
-        quast.py {input.fasta} -o {output.dir} --threads {threads} --label {wildcards.sample} > {log} 2>&1
-        """
+        "quast.py {input.fasta} -o {output.dir} --threads {threads} --label {wildcards.sample} > {log} 2>&1"
 
+#BUSCO quality control for consistency
 rule busco_qc_prepolish:
     input:
         fasta = "results/assembly/{sample}/assembly.fasta"
@@ -32,14 +32,12 @@ rule busco_qc_prepolish:
     log:
         "results/logs/busco_pre/{sample}.log"
     shell:
-        """
-        busco -i {input.fasta} -o {params.out_name} --out_path {params.out_path} -m genome -l {params.lineage} --download_path {params.download_path} --cpu {threads} --force > {log} 2>&1
-        """
+        "busco -i {input.fasta} -o {params.out_name} --out_path {params.out_path} -m genome -l {params.lineage} --download_path {params.download_path} --cpu {threads} --force > {log} 2>&1"
 
 
 
 # -------------------------------------------------------------------
-# postpolishing
+## Post-polishing
 
 #Quast quality control
 rule quast_qc:
@@ -53,9 +51,7 @@ rule quast_qc:
     log:
         "results/logs/quast/{sample}.log"
     shell:
-        """
-        quast.py {input.fasta} -o {output.dir} --threads {threads} --label {wildcards.sample} > {log} 2>&1
-        """
+        "quast.py {input.fasta} -o {output.dir} --threads {threads} --label {wildcards.sample} > {log} 2>&1"
 
 #BUSCO quality control for consistency
 rule busco_qc:
@@ -74,9 +70,9 @@ rule busco_qc:
     log:
         "results/logs/busco/{sample}.log"
     shell:
-        """
-        busco -i {input.fasta} -o {params.out_name} --out_path {params.out_path} -m genome -l {params.lineage} --download_path {params.download_path} --cpu {threads} --force > {log} 2>&1
-        """
+        "busco -i {input.fasta} -o {params.out_name} --out_path {params.out_path} -m genome -l {params.lineage} --download_path {params.download_path} --cpu {threads} --force > {log} 2>&1"
+
+
 
 #MultiQC for the single QCs of the single assemblies
 rule multiqc_assembly:

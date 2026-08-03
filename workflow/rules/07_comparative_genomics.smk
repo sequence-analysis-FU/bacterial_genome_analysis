@@ -4,7 +4,7 @@ if EXTERNAL_FASTA:
     rule annotate_external_genome:
         input:
             fasta = EXTERNAL_FASTA,
-            db = config["bakta"]["db_path"]
+            db = rules.download_bakta_db.output
         output:
             gff = "results/annotation/external/external.gff3"
         params:
@@ -15,10 +15,7 @@ if EXTERNAL_FASTA:
         log:
             "results/logs/annotate_external_genome.log"
         shell:
-            """
-            bakta --db {input.db} --output {params.outdir} --prefix {params.prefix} \
-                  --threads {threads} --force {input.fasta} > {log} 2>&1
-            """
+            "bakta --db {input.db} --output {params.outdir} --prefix {params.prefix} --threads {threads} --force {input.fasta} > {log} 2>&1"
 
 # Panaroo tool as checkpoint 
 checkpoint run_panaroo:

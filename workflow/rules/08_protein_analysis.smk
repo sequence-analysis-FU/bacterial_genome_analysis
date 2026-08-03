@@ -12,9 +12,7 @@ if ENABLE_PROTEIN_ANALYSIS:
         conda:
             "../envs/08_protein_analysis.yaml"
         shell:
-            """
-            makeblastdb -in {input.predicted_genes} -dbtype prot -out results/protein_analysis/blast_db/{wildcards.sample} > {log} 2>&1
-            """
+            "makeblastdb -in {input.predicted_genes} -dbtype prot -out results/protein_analysis/blast_db/{wildcards.sample} > {log} 2>&1"
 
 
     rule blastp_search:
@@ -51,7 +49,6 @@ if ENABLE_PROTEIN_ANALYSIS:
         script:
             "../scripts/collect_orthologs.py"
 
-    # if we dont want to loop threw the directory, we could also use checkpoints and then do specific for each fasta.
     rule msa:
         input:
             ortholog_dir=rules.prepare_ortholog_fastas.output.ortholog_dir

@@ -7,12 +7,12 @@ def load_fasta(path):
 
 
 def main():
-    # Use the blast report filenames as sample names.
+    # Use the blast report filenames as sample names
     sample_names = [os.path.basename(p).removesuffix(".tsv") for p in snakemake.input.blastp_reports]
     sample_to_faa = {s: f for s, f in zip(sample_names, snakemake.input.sample_fastas)}
     os.makedirs(snakemake.output.ortholog_dir, exist_ok=True)
 
-    # Keep the first BLAST hit found. We assume thats the best one.
+    # Keep the first BLAST hit found, we assume that's the best one
     selected = {}
     seen = set()
     for sample, report in zip(sample_names, snakemake.input.blastp_reports):

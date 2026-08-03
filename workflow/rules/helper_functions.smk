@@ -13,7 +13,7 @@ def get_final_assembly(wildcards):
 
 # Function to gather the inputs for Panaroo tool (used in 07_comparative_genomics.smk)
 def get_panaroo_inputs(wildcards):
-    # Get GFFs from all samples in the sample sheet [4]
+    # Get GFFs from all samples in the sample sheet
     gffs = list(expand("results/annotation/{sample}/{sample}.gff3", sample=samples.index))
 
     # Add the external GFF only if the fasta was provided in config

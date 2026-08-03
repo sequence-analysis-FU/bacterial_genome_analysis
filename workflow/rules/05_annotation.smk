@@ -10,9 +10,7 @@ rule download_bakta_db:
     log:
         "results/logs/bakta_db_setup.log"
     shell:
-        """
-        bakta_db download --output {output} --type {params.db_type} > {log} 2>&1
-        """
+        "bakta_db download --output {output} --type {params.db_type} > {log} 2>&1"
 
 rule bakta_annotation:
     input:

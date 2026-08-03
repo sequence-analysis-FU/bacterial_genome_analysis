@@ -1,5 +1,5 @@
 #If an external genome is given in input, need to annotate it to add it to the core genome analysis
-EXTERNAL_FASTA = config.get("comparative_genomics", {}).get("external_genome_fasta", "")
+EXTERNAL_FASTA = config.get("comparative_genomics", {}).get("external_genome", "")
 if EXTERNAL_FASTA:
     rule annotate_external_genome:
         input:
@@ -17,7 +17,7 @@ if EXTERNAL_FASTA:
         shell:
             """
             bakta --db {input.db} --output {params.outdir} --prefix {params.prefix} \
-                  --threads {threads} --force {input.fasta}
+                  --threads {threads} --force {input.fasta} > {log} 2>&1
             """
 
 # Panaroo tool as checkpoint 

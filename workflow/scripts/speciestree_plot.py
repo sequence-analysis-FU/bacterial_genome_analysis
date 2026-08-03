@@ -27,6 +27,7 @@ def main():
     ax.set_ylabel("Species", fontsize=10)
     plt.tight_layout()
     plt.savefig(snakemake.output.plot, bbox_inches="tight")
+    plt.close(fig)
 
 
 main()

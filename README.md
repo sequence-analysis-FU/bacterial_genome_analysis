@@ -3,7 +3,7 @@
 The pipeline performs bacterial genome analysis from raw sequencing reads to genome assembly, annotation, comparative genomics, antibiotic resistance screening, and optional protein phylogenetic analysis.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/f4cec2c2-3e85-459f-8a40-6dd814be9210"
+  <img src="https://github.com/user-attachments/assets/a35f3a59-7c86-47f6-ba86-ef0a94028b15"
        alt="Workflow overview"
        width="700">
 </p>

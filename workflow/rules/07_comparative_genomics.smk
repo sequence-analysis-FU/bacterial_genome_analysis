@@ -36,12 +36,18 @@ checkpoint run_panaroo:
                 -t {threads} --core_threshold {params.threshold} -a core --aligner mafft > {log} 2>&1
         """
 
-# To help astral to identify the correct numbers of species. So ASTRAL can collapse multiple gene copies per genome into one species tip.
+# To help astral to identify the correct numbers of species
+# Sample tips are mapped to their sample. All others to "external"
+# Example:
+#   sample1_0_0_100  sample1
+#   sample2_1_2_3    sample2
+#   external_1_2_3   external
 rule create_astral_mapping:
     input:
         trees = aggregate_gene_trees
     output:
         mapping = "results/comparative/species_mapping.txt"
+    params: samples = sample_names
     log:
         "results/logs/create_astral_mapping.log"
     script:

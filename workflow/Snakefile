@@ -3,6 +3,7 @@ import pandas as pd
 
 configfile: "config/config.yaml"
 samples = pd.read_csv(config["samples"],index_col="sample",sep="\t")
+sample_names = samples.index.tolist()
 
 # Flags to enable/disable steps of the workflow
 ENABLE_SHORT_READS = config.get("short_reads", {}).get("enabled", True)

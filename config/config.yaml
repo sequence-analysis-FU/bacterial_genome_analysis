@@ -1,16 +1,22 @@
-samples : "config/samples_set1.tsv"
+samples : "config/samples_set2_ont.tsv"
 
 # --------------------------------------------------------------------
-# configuration for the workflow
+# enable/disable steps of the workflow
 
 short_reads:
+  enabled: true
+
+resistance_screening:
+  enabled: true
+
+protein_analysis:
   enabled: true
 
 # --------------------------------------------------------------------
 # 01_read_qc
 
 multiqc:
-  extra: ""
+  extra: "--dirs" # to look at parents to be able to see before and after trimming in one report. (They have same name, but different path)
 
 multiqc_assembly:
   extra: "--dirs" # to look at parents for busco
@@ -54,11 +60,37 @@ pilon:
 # --------------------------------------------------------------------
 # 05_annotation
 
+bakta:
+  db_path: "resources/db_bakta"
+  db_type: "light"  #change as wanted between 'full' or 'light'
+
 # --------------------------------------------------------------------
 # 06_resistance_genes
 
+screening:
+  extra: ""
+
+card:
+  db_path: "resources/db_card"
 # --------------------------------------------------------------------
 # 07_comparative_genomics
 
+comparative_genomics:
+  external_genome : ""
+  core_threshold: 0.95 #1.00 is too strict
+  
 # --------------------------------------------------------------------
 # 08_protein_analysis
+
+protein_set:
+  path: "resources/protein_set.faa"
+
+blastp:
+  extra: ""
+  max_target_seqs: 10
+
+msa:
+  extra: ""
+
+phylogenetic_tree:
+  extra: ""

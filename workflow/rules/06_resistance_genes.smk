@@ -12,9 +12,8 @@ if ENABLE_RESISTANCE_SCREENING:
         shell:
             """
             mkdir -p {params.db_path}
-            cd {params.db_path}
-            rgi load --local > {log} 2>&1
-            touch {output.done}
+            (cd {params.db_path} && rgi load --local) > {log} 2>&1
+            touch {params.db_path}/.done
             """
     
     rule resistance_screening:
